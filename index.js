@@ -11,15 +11,14 @@ const app = new App({
   signingSecret: process.env.SLACK_APP_SIGNING_SECRET,
 });
 
-app.message('hello', async ({ event, say }) => {
-  let regexValue = /^[?]/;
-  if (event.text.match(regexValue)) {
-    console.log('contains ?');
-  } else {
-    await say(`Hello, <@${event.user}>`);
-    console.log(event);
-    console.log('hihi');
-  }
+let regexCheck = /^[?]/;
+app.message(regexCheck, async ({ event, say }) => {
+  await say(`Hello <@${event.user}>, you entered ${event.text}`);
+});
+
+let notRegexCheck = /^[^?]/;
+app.message(notRegexCheck, async ({ event, say }) => {
+  await say('Please check your syntax');
 });
 
 (async () => {
